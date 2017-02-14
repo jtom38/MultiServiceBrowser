@@ -32,8 +32,11 @@ namespace MultiServiceBrowser
                     args = eleArgs.Text
                 });
                 _config.SaveFile();
-                
 
+                eleName.Clear();
+                eleURL.Clear();
+                eleArgs.Clear();
+                eleIconPath.Clear();
             }
             catch
             {

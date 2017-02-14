@@ -110,36 +110,6 @@ namespace MultiServiceBrowser
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             onLoadParseConfig();
-            //onLoadTest();
-        }
-
-        private void onLoadTest()
-        {
-            try
-            {
-                configuration _config = new configuration();
-                _config.LoadFile();
-
-                for (int i = 0; i < 15; i++)
-                {
-                    Image newImage = new Image();
-                    newImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "\\Resources\\Help_64px.png"));
-                    newImage.Name = $"Link{i}".ToString();
-                    newImage.Width = 64;
-                    newImage.Height = 64;
-                    newImage.Tag = i;
-                    newImage.HorizontalAlignment = HorizontalAlignment.Left;
-                    newImage.MouseUp += NewImage_MouseUp;
-
-                    var total = SiteIcons.Children.Count;
-
-                    SiteIcons.Children.Insert(SiteIcons.Children.Count - 2, newImage);
-                }
-            }
-            catch
-            {
-
-            }
         }
 
         private void NewImage_MouseUp(object sender, MouseButtonEventArgs e)
@@ -151,15 +121,12 @@ namespace MultiServiceBrowser
                 int indexValue = int.Parse(clickedButton.Tag.ToString());
                 if(clickedButton.Tag != null)
                 {
-                    
 
-                    using (WebBrowser uiBrowser = new WebBrowser())
-                    {
-                        uiBrowser.Name = "eleBrowser";
-                        uiBrowser.Visibility = Visibility.Visible;
-                        uiGrid.Children.Add(uiBrowser);
-                        uiBrowser.Navigate(configuration.listSites[indexValue].url);
-                    }    
+                    WebBrowser uiBrowser = new WebBrowser();
+                    uiBrowser.Name = "eleBrowser";
+                    uiBrowser.Visibility = Visibility.Visible;
+                    uiGrid.Children.Add(uiBrowser);
+                    uiBrowser.Navigate(configuration.listSites[indexValue].url);   
                 }
             }
             catch
@@ -179,8 +146,21 @@ namespace MultiServiceBrowser
                 for (int i = 0; i < configuration.listSites.Count; i++)
                 {
 
+                    StackPanel newStackPanel = new StackPanel();
+                    newStackPanel.Orientation = Orientation.Horizontal;
+
+
                     Image newImage = new Image();
-                    newImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "\\Resources\\Help_64px.png"));
+
+                    if(configuration.listSites[i].iconPath != null)
+                    {
+                        newImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + $"\\Resources\\{configuration.listSites[i].iconPath}"));
+                    }
+                    else
+                    {
+                        newImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "\\Resources\\Help_64px.png"));
+                    }
+                    
                     newImage.Name = $"Link{i}".ToString();
                     newImage.Width = 64;
                     newImage.Height = 64;
@@ -188,9 +168,19 @@ namespace MultiServiceBrowser
                     newImage.HorizontalAlignment = HorizontalAlignment.Left;
                     newImage.MouseUp += NewImage_MouseUp;
 
-                    var total = SiteIcons.Children.Count;
+                    //add the icon to NewStackPanel
+                    newStackPanel.Children.Add(newImage);
 
-                    SiteIcons.Children.Insert(SiteIcons.Children.Count - 2, newImage);
+                    Label newLabel = new Label();
+                    newLabel.VerticalAlignment = VerticalAlignment.Center;
+                    newLabel.FontSize = 20;
+                    newLabel.Content = configuration.listSites[i].site;
+
+                    //add label to the NewStackPanel
+                    newStackPanel.Children.Add(newLabel);
+
+                    //adds to the core menu
+                    SiteIcons.Children.Insert(SiteIcons.Children.Count - 2, newStackPanel);
                 }
 
             }
@@ -205,18 +195,41 @@ namespace MultiServiceBrowser
             try
             {
                 Image MenuRoot00 = new Image();
-                MenuRoot00.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "\\Resources\\Help_64px.png"));
+                MenuRoot00.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "\\Resources\\Plus_64px.png"));
                 MenuRoot00.Name = "MenuRoot00";
                 MenuRoot00.Width = 64;
                 MenuRoot00.Height = 64;
                 MenuRoot00.Tag = "MenuRoot00";
                 MenuRoot00.HorizontalAlignment = HorizontalAlignment.Left;
-                MenuRoot00.MouseUp += NewImage_MouseUp;
-
-                var total = SiteIcons.Children.Count;
+                MenuRoot00.MouseUp += MenuRoot00_MouseUp;
 
                 SiteIcons.Children.Insert(0, MenuRoot00);
 
+                
+                Image MenuRoot01 = new Image();
+                MenuRoot01.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "\\Resources\\Help_64px.png"));
+                MenuRoot01.Name = "MenuRoot01";
+                MenuRoot01.Width = 64;
+                MenuRoot01.Height = 64;
+                MenuRoot01.Tag = "MenuRoot01";
+                MenuRoot01.HorizontalAlignment = HorizontalAlignment.Left;
+                MenuRoot01.MouseUp += MenuRoot01_MouseUp;
+
+                SiteIcons.Children.Insert(1, MenuRoot01);
+
+                onLoadParseConfig();
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void MenuRootHamburder_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                uiSplitView.IsPaneOpen = !uiSplitView.IsPaneOpen;
 
             }
             catch
@@ -225,17 +238,19 @@ namespace MultiServiceBrowser
             }
         }
 
-        private void IconSelected_MouseUp(object sender, RoutedEventArgs e)
+        private void MenuRootHamburger_Loaded(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                //uiBrowser.Navigate(configuration.listSites[SiteIcons.Children.Count - 2]);
-                //uiBrowser.Visibility = Visibility.Visible;
-            }
-            catch
-            {
+            // ... Create a new BitmapImage.
+            BitmapImage b = new BitmapImage();
+            b.BeginInit();
+            string t = Directory.GetCurrentDirectory() + "//Resources//menu_64px.png";
+            b.UriSource = new Uri(t);
+            b.EndInit();
 
-            }
+            // ... Get Image reference from sender.
+            var image = sender as Image;
+            // ... Assign Source.
+            image.Source = b;
         }
 
         private void MenuRoot00_MouseUp(object sender, MouseButtonEventArgs e)
@@ -247,10 +262,8 @@ namespace MultiServiceBrowser
 
                 SiteIcons.Children.Clear();
                 //clear the sites and reparse the config
+                ReloadSites();
 
-
-                //uiBrowser.Navigate("http://www.google.com");
-                //uiBrowser.Visibility = Visibility.Visible;
             }
             catch
             {
@@ -282,7 +295,7 @@ namespace MultiServiceBrowser
 
         private void MenuRoot01_MouseUp(object sender, MouseButtonEventArgs e)
         {
-
+            //about screen
         }
 
         private void MenuRoot01_Loaded(object sender, RoutedEventArgs e)

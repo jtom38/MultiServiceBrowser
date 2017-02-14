@@ -8,14 +8,23 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="720" Width="1280" WindowStartupLocation="CenterScreen">
     
-    <Controls:SplitView DisplayMode="CompactInline" OpenPaneLength="150" CompactPaneLength="64" >
+    <Controls:SplitView x:Name="uiSplitView" DisplayMode="CompactInline" OpenPaneLength="250" CompactPaneLength="64" >
         <Controls:SplitView.Pane>
             <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Hidden" >
                             
-                <StackPanel x:Name="SiteIcons" Background="#24211E">          
-                
-                               
-                    <Image x:Name="MenuRoot00" 
+                <StackPanel x:Name="SiteIcons" Background="#24211E">
+                    
+                    <Image x:Name="MenuRootHamburger" 
+                               Source="pack://application:,,,/Resources/menu_64px.png" 
+                               Width="64" 
+                               Height="64" 
+                               HorizontalAlignment="Left"
+                               Focusable="True"
+                               MouseUp="MenuRootHamburder_MouseUp"
+                               Loaded="MenuRootHamburger_Loaded"/>
+                    
+                    <StackPanel Orientation="Horizontal">
+                        <Image x:Name="MenuRoot00" 
                                Source="pack://application:,,,/Resources/plus_64px.png" 
                                Width="64" 
                                Height="64" 
@@ -24,7 +33,14 @@
                                MouseUp="MenuRoot00_MouseUp"
                                Loaded="MenuRoot00_Loaded"/>
 
-                    <Image x:Name="MenuRoot01" 
+                        <Label x:Name="MenuRootAddLabel"
+                               VerticalAlignment="Center"
+                               FontSize="20"
+                               Content="Add Site"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image x:Name="MenuRoot01" 
                                Source="pack://application:,,,/Resources/info_64px.png" 
                                Width="64" 
                                Height="64" 
@@ -32,6 +48,13 @@
                                Focusable="True"
                                MouseUp ="MenuRoot01_MouseUp"
                                Loaded="MenuRoot01_Loaded"/>
+                        
+                        <Label x:Name="MenuRootAboutLabel"
+                               VerticalAlignment="Center"
+                               FontSize="20"
+                               Content="About"/>
+                    </StackPanel>
+
 
                 </StackPanel>
             </ScrollViewer>
