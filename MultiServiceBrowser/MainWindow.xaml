@@ -6,32 +6,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MultiServiceBrowser"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280" WindowStartupLocation="CenterScreen">
+        Title="Multi Service Browser" Height="720" Width="1280" WindowStartupLocation="CenterScreen">
     
     <Controls:SplitView x:Name="uiSplitView" DisplayMode="CompactInline" OpenPaneLength="250" CompactPaneLength="64" >
         <Controls:SplitView.Pane>
             <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Hidden" >
                             
                 <StackPanel x:Name="SiteIcons" Background="#24211E">
-                    
-                    <Image x:Name="MenuRootHamburger" 
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image x:Name="MenuRootHamburger" 
                                Source="pack://application:,,,/Resources/menu_64px.png" 
-                               Width="64" 
-                               Height="64" 
-                               HorizontalAlignment="Left"
+                               Width="58" 
+                               Height="58" 
+                               HorizontalAlignment="Center"
+                               Margin="4,0,4,0"
                                Focusable="True"
-                               MouseUp="MenuRootHamburder_MouseUp"
+                               MouseUp="MenuRootHamburger_MouseUp"
                                Loaded="MenuRootHamburger_Loaded"/>
+                    </StackPanel>
+
                     
                     <StackPanel Orientation="Horizontal">
-                        <Image x:Name="MenuRoot00" 
+                        <Image x:Name="MenuRootAdd" 
                                Source="pack://application:,,,/Resources/plus_64px.png" 
-                               Width="64" 
-                               Height="64" 
-                               HorizontalAlignment="Left"
+                               Width="58" 
+                               Height="58" 
+                               HorizontalAlignment="Center"
+                               Margin="4,0,4,0"
                                Focusable="True"
-                               MouseUp="MenuRoot00_MouseUp"
-                               Loaded="MenuRoot00_Loaded"/>
+                               MouseUp="MenuRootAdd_MouseUp"
+                               Loaded="MenuRootAdd_Loaded"/>
 
                         <Label x:Name="MenuRootAddLabel"
                                VerticalAlignment="Center"
@@ -40,14 +45,15 @@
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
-                        <Image x:Name="MenuRoot01" 
+                        <Image x:Name="MenuRootAbout" 
                                Source="pack://application:,,,/Resources/info_64px.png" 
-                               Width="64" 
-                               Height="64" 
-                               HorizontalAlignment="Left"
+                               Width="58" 
+                               Height="58" 
+                               HorizontalAlignment="Center"
+                               Margin="4,0,4,0"
                                Focusable="True"
-                               MouseUp ="MenuRoot01_MouseUp"
-                               Loaded="MenuRoot01_Loaded"/>
+                               MouseUp ="MenuRootAbout_MouseUp"
+                               Loaded="MenuRootAbout_Loaded"/>
                         
                         <Label x:Name="MenuRootAboutLabel"
                                VerticalAlignment="Center"

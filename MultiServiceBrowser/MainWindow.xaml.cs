@@ -162,10 +162,11 @@ namespace MultiServiceBrowser
                     }
                     
                     newImage.Name = $"Link{i}".ToString();
-                    newImage.Width = 64;
-                    newImage.Height = 64;
+                    newImage.Width = 58;
+                    newImage.Height = 58;
+                    newImage.Margin = new Thickness(4,0,4,0);
                     newImage.Tag = i;
-                    newImage.HorizontalAlignment = HorizontalAlignment.Left;
+                    newImage.HorizontalAlignment = HorizontalAlignment.Center;
                     newImage.MouseUp += NewImage_MouseUp;
 
                     //add the icon to NewStackPanel
@@ -194,28 +195,39 @@ namespace MultiServiceBrowser
         {
             try
             {
-                Image MenuRoot00 = new Image();
-                MenuRoot00.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "\\Resources\\Plus_64px.png"));
-                MenuRoot00.Name = "MenuRoot00";
-                MenuRoot00.Width = 64;
-                MenuRoot00.Height = 64;
-                MenuRoot00.Tag = "MenuRoot00";
-                MenuRoot00.HorizontalAlignment = HorizontalAlignment.Left;
-                MenuRoot00.MouseUp += MenuRoot00_MouseUp;
+                Image MenuRootHamburger = new Image();
+                MenuRootHamburger.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "\\Resources\\Menu_64px.png"));
+                MenuRootHamburger.Name = "MenuRootHamburger";
+                MenuRootHamburger.Width = 64;
+                MenuRootHamburger.Height = 64;
+                MenuRootHamburger.Tag = "MenuRootHamburger";
+                MenuRootHamburger.HorizontalAlignment = HorizontalAlignment.Left;
+                MenuRootHamburger.MouseUp += MenuRootHamburger_MouseUp;
 
-                SiteIcons.Children.Insert(0, MenuRoot00);
+                SiteIcons.Children.Insert(0, MenuRootHamburger);
+
+                Image MenuRootAdd = new Image();
+                MenuRootAdd.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "\\Resources\\Plus_64px.png"));
+                MenuRootAdd.Name = "MenuRootAdd";
+                MenuRootAdd.Width = 64;
+                MenuRootAdd.Height = 64;
+                MenuRootAdd.Tag = "MenuRootAdd";
+                MenuRootAdd.HorizontalAlignment = HorizontalAlignment.Left;
+                MenuRootAdd.MouseUp += MenuRootAdd_MouseUp;
+
+                SiteIcons.Children.Insert(1, MenuRootAdd);
 
                 
-                Image MenuRoot01 = new Image();
-                MenuRoot01.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "\\Resources\\Help_64px.png"));
-                MenuRoot01.Name = "MenuRoot01";
-                MenuRoot01.Width = 64;
-                MenuRoot01.Height = 64;
-                MenuRoot01.Tag = "MenuRoot01";
-                MenuRoot01.HorizontalAlignment = HorizontalAlignment.Left;
-                MenuRoot01.MouseUp += MenuRoot01_MouseUp;
+                Image MenuRootAbout = new Image();
+                MenuRootAbout.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "\\Resources\\Help_64px.png"));
+                MenuRootAbout.Name = "MenuRootAbout";
+                MenuRootAbout.Width = 64;
+                MenuRootAbout.Height = 64;
+                MenuRootAbout.Tag = "MenuRootAbout";
+                MenuRootAbout.HorizontalAlignment = HorizontalAlignment.Left;
+                MenuRootAbout.MouseUp += MenuRootAbout_MouseUp;
 
-                SiteIcons.Children.Insert(1, MenuRoot01);
+                SiteIcons.Children.Insert(2, MenuRootAbout);
 
                 onLoadParseConfig();
             }
@@ -225,7 +237,7 @@ namespace MultiServiceBrowser
             }
         }
 
-        private void MenuRootHamburder_MouseUp(object sender, MouseButtonEventArgs e)
+        private void MenuRootHamburger_MouseUp(object sender, MouseButtonEventArgs e)
         {
             try
             {
@@ -253,7 +265,7 @@ namespace MultiServiceBrowser
             image.Source = b;
         }
 
-        private void MenuRoot00_MouseUp(object sender, MouseButtonEventArgs e)
+        private void MenuRootAdd_MouseUp(object sender, MouseButtonEventArgs e)
         {
             try
             {
@@ -271,7 +283,7 @@ namespace MultiServiceBrowser
             }
         }
 
-        private void MenuRoot00_Loaded(object sender, RoutedEventArgs e)
+        private void MenuRootAdd_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -293,12 +305,12 @@ namespace MultiServiceBrowser
             }
         }
 
-        private void MenuRoot01_MouseUp(object sender, MouseButtonEventArgs e)
+        private void MenuRootAbout_MouseUp(object sender, MouseButtonEventArgs e)
         {
             //about screen
         }
 
-        private void MenuRoot01_Loaded(object sender, RoutedEventArgs e)
+        private void MenuRootAbout_Loaded(object sender, RoutedEventArgs e)
         {
             // ... Create a new BitmapImage.
             BitmapImage b = new BitmapImage();

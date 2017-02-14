@@ -29,7 +29,8 @@ namespace MultiServiceBrowser
                 {
                     site = eleName.Text,
                     url = eleURL.Text,
-                    args = eleArgs.Text
+                    args = eleArgs.Text,
+                    iconPath = eleIconPath.Text
                 });
                 _config.SaveFile();
 
