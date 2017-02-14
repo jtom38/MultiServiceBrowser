@@ -7,8 +7,8 @@
         xmlns:local="clr-namespace:MultiServiceBrowser"
         mc:Ignorable="d"
         Title="New Site"  SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" Height="Auto" Width="300">
-    
-    <Grid Background="Gray">
+
+    <Grid Background="#3E3936">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />

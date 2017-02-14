@@ -63,6 +63,16 @@ namespace MultiServiceBrowser.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap Help_64px {
+            get {
+                object obj = ResourceManager.GetObject("Help_64px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap Info_64px {
             get {
                 object obj = ResourceManager.GetObject("Info_64px", resourceCulture);

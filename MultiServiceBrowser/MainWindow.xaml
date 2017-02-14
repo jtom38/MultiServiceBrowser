@@ -6,44 +6,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MultiServiceBrowser"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280">
+        Title="MainWindow" Height="720" Width="1280" WindowStartupLocation="CenterScreen">
     
     <Controls:SplitView DisplayMode="CompactInline" OpenPaneLength="150" CompactPaneLength="64" >
         <Controls:SplitView.Pane>
-            <StackPanel x:Name="SiteIcons" Background="Gray">
-                <ScrollBar Visibility="Collapsed"/>
-                <!-- 
-                <Image x:Name="MenuItem01" 
-                       Width="64" Height="64" 
-                       HorizontalAlignment="Left"
-                       Focusable="True" 
-                       MouseUp="MenuItem01_MouseUp" 
-                       Loaded="MenuItem01_Loaded"/>
-
-                <Image x:Name="MenuItem02" Width="64" Height="64" HorizontalAlignment="Left"/> 
-                -->
-                <Image x:Name="MenuRoot00" 
-                       Source="pack://application:,,,/Resources/plus_64px.png" 
-                       Width="64" 
-                       Height="64" 
-                       HorizontalAlignment="Left"
-                       Focusable="True"
-                       MouseUp="MenuRoot00_MouseUp"
-                       Loaded="MenuRoot00_Loaded"/>
+            <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Hidden" >
+                            
+                <StackPanel x:Name="SiteIcons" Background="#24211E">          
                 
-                <Image x:Name="MenuRoot01" 
-                       Source="pack://application:,,,/Resources/info_64px.png" 
-                       Width="64" 
-                       Height="64" 
-                       HorizontalAlignment="Left"
-                       Focusable="True"
-                       MouseUp ="MenuRoot01_MouseUp"
-                       Loaded="MenuRoot01_Loaded"/>
-            </StackPanel>
+                               
+                    <Image x:Name="MenuRoot00" 
+                               Source="pack://application:,,,/Resources/plus_64px.png" 
+                               Width="64" 
+                               Height="64" 
+                               HorizontalAlignment="Left"
+                               Focusable="True"
+                               MouseUp="MenuRoot00_MouseUp"
+                               Loaded="MenuRoot00_Loaded"/>
+
+                    <Image x:Name="MenuRoot01" 
+                               Source="pack://application:,,,/Resources/info_64px.png" 
+                               Width="64" 
+                               Height="64" 
+                               HorizontalAlignment="Left"
+                               Focusable="True"
+                               MouseUp ="MenuRoot01_MouseUp"
+                               Loaded="MenuRoot01_Loaded"/>
+
+                </StackPanel>
+            </ScrollViewer>
         </Controls:SplitView.Pane>
         <Controls:SplitView.Content>
-            <Grid Background="Gray">
-                <WebBrowser x:Name="uiBrowser" Width="Auto" Height="Auto" Visibility="Visible"/>
+            <Grid x:Name="uiGrid" Background="#3E3936" Width="Auto" Height="Auto">
+                <!-- <WebBrowser x:Name="uiBrowser" Width="Auto" Height="Auto" Visibility="Visible" /> -->
 
             </Grid>
         </Controls:SplitView.Content>
