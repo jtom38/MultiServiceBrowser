@@ -130,7 +130,4 @@
   <data name="Plus_64px" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Plus_64px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="sonarr_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\sonarr_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
 </root>

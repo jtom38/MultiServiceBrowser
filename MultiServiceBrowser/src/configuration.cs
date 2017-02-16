@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace MultiServiceBrowser
+namespace MultiServiceBrowser.src
 {
     public class ListSites
     {
         public string site { get; set; }
+        public string host { get; set; }
         public string url { get; set; }
         public string args { get; set; }
         public string iconPath { get; set; }

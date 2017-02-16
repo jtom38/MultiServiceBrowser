@@ -58,7 +58,9 @@
                         <Label x:Name="MenuRootAboutLabel"
                                VerticalAlignment="Center"
                                FontSize="20"
-                               Content="About"/>
+                               Content="About"
+                               MouseUp="MenuRootAbout_MouseUp"
+                               />
                     </StackPanel>
 
 
@@ -68,6 +70,7 @@
         <Controls:SplitView.Content>
             <Grid x:Name="uiGrid" Background="#3E3936" Width="Auto" Height="Auto">
                 <!-- <WebBrowser x:Name="uiBrowser" Width="Auto" Height="Auto" Visibility="Visible" /> -->
+                <Frame x:Name="uiFrame" Width="Auto" Height="Auto" NavigationUIVisibility="Hidden"></Frame>
 
             </Grid>
         </Controls:SplitView.Content>

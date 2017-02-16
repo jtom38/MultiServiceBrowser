@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MultiServiceBrowser.src.ui
+namespace MultiServiceBrowser
 {
     /// <summary>
-    /// Interaction logic for uiPageBrowser.xaml
+    /// Interaction logic for PageAbout.xaml
     /// </summary>
-    public partial class uiPageBrowser : Page
+    public partial class PageAbout : Page
     {
-        public uiPageBrowser()
+        public PageAbout()
         {
             InitializeComponent();
         }

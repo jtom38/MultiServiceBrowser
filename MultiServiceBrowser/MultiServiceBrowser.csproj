@@ -70,13 +70,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="favicon.cs" />
-    <Compile Include="uiNewSite.xaml.cs">
-      <DependentUpon>uiNewSite.xaml</DependentUpon>
+    <Compile Include="PageAbout.xaml.cs">
+      <DependentUpon>PageAbout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="src\ui\uiPageBrowser.xaml.cs">
-      <DependentUpon>uiPageBrowser.xaml</DependentUpon>
+    <Compile Include="PageNewSite.xaml.cs">
+      <DependentUpon>PageNewSite.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="src\BrowserFixes.cs" />
+    <Compile Include="src\favicon.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -85,16 +91,16 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="configuration.cs" />
+    <Compile Include="src\configuration.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="uiNewSite.xaml">
+    <Page Include="PageAbout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="src\ui\uiPageBrowser.xaml">
+    <Page Include="PageNewSite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -103,11 +109,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -115,6 +116,7 @@
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
@@ -126,9 +128,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\sonarr_icon.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Info_64px.png">

@@ -14,9 +14,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MultiServiceBrowser.src.ui;
+using MultiServiceBrowser.src;
 using System.ComponentModel;
 using Microsoft.Win32;
+using System.Windows.Threading;
 
 namespace MultiServiceBrowser
 {
@@ -25,86 +26,16 @@ namespace MultiServiceBrowser
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+
+        private BrowserFixes _browserFixes;
+
         public MainWindow()
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
-            SetWebBrowserFeatures();
-        }
 
-        // set WebBrowser features, more info: http://stackoverflow.com/a/18333982/1768303
-        static void SetWebBrowserFeatures()
-        {
-            // don't change the registry if running in-proc inside Visual Studio
-            if (LicenseManager.UsageMode != LicenseUsageMode.Runtime)
-                return;
-
-            var appName = System.IO.Path.GetFileName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
-
-            var featureControlRegKey = @"HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\Main\FeatureControl\";
-
-            Registry.SetValue(featureControlRegKey + "FEATURE_BROWSER_EMULATION",
-                appName, GetBrowserEmulationMode(), RegistryValueKind.DWord);
-
-            // enable the features which are "On" for the full Internet Explorer browser
-
-            Registry.SetValue(featureControlRegKey + "FEATURE_ENABLE_CLIPCHILDREN_OPTIMIZATION",
-                appName, 1, RegistryValueKind.DWord);
-
-            Registry.SetValue(featureControlRegKey + "FEATURE_AJAX_CONNECTIONEVENTS",
-                appName, 1, RegistryValueKind.DWord);
-
-            Registry.SetValue(featureControlRegKey + "FEATURE_GPU_RENDERING",
-                appName, 1, RegistryValueKind.DWord);
-
-            Registry.SetValue(featureControlRegKey + "FEATURE_WEBOC_DOCUMENT_ZOOM",
-                appName, 1, RegistryValueKind.DWord);
-
-            Registry.SetValue(featureControlRegKey + "FEATURE_NINPUT_LEGACYMODE",
-                appName, 0, RegistryValueKind.DWord);
-        }
-
-        static UInt32 GetBrowserEmulationMode()
-        {
-            int browserVersion = 0;
-            using (var ieKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Internet Explorer",
-                RegistryKeyPermissionCheck.ReadSubTree,
-                System.Security.AccessControl.RegistryRights.QueryValues))
-            {
-                var version = ieKey.GetValue("svcVersion");
-                if (null == version)
-                {
-                    version = ieKey.GetValue("Version");
-                    if (null == version)
-                        throw new ApplicationException("Microsoft Internet Explorer is required!");
-                }
-                int.TryParse(version.ToString().Split('.')[0], out browserVersion);
-            }
-
-            if (browserVersion < 7)
-            {
-                throw new ApplicationException("Unsupported version of Microsoft Internet Explorer!");
-            }
-
-            UInt32 mode = 11000; // Internet Explorer 11. Webpages containing standards-based !DOCTYPE directives are displayed in IE11 Standards mode. 
-
-            switch (browserVersion)
-            {
-                case 7:
-                    mode = 7000; // Webpages containing standards-based !DOCTYPE directives are displayed in IE7 Standards mode. 
-                    break;
-                case 8:
-                    mode = 8000; // Webpages containing standards-based !DOCTYPE directives are displayed in IE8 mode. 
-                    break;
-                case 9:
-                    mode = 9000; // Internet Explorer 9. Webpages containing standards-based !DOCTYPE directives are displayed in IE9 mode.                    
-                    break;
-                case 10:
-                    mode = 10000; // Internet Explorer 10.
-                    break;
-            }
-
-            return mode;
+            _browserFixes = new BrowserFixes();
+            _browserFixes.SetWebBrowserFeatures();
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -121,12 +52,13 @@ namespace MultiServiceBrowser
                 int indexValue = int.Parse(clickedButton.Tag.ToString());
                 if(clickedButton.Tag != null)
                 {
-
-                    WebBrowser uiBrowser = new WebBrowser();
-                    uiBrowser.Name = "eleBrowser";
-                    uiBrowser.Visibility = Visibility.Visible;
-                    uiGrid.Children.Add(uiBrowser);
-                    uiBrowser.Navigate(configuration.listSites[indexValue].url);   
+                    uiFrame.Source = new Uri(configuration.listSites[indexValue].url, UriKind.RelativeOrAbsolute);
+                    uiFrame.NavigationService.RemoveBackEntry();
+                    //WebBrowser uiBrowser = new WebBrowser();
+                    //uiBrowser.Name = "eleBrowser";
+                    //uiBrowser.Visibility = Visibility.Visible;
+                    //uiGrid.Children.Add(uiBrowser);
+                    //uiBrowser.Navigate(configuration.listSites[indexValue].url);   
                 }
             }
             catch
@@ -150,35 +82,31 @@ namespace MultiServiceBrowser
                     newStackPanel.Orientation = Orientation.Horizontal;
 
 
-                    Image newImage = new Image();
+                    //Canvas gridImages = new Canvas();
 
-                    if(configuration.listSites[i].iconPath != null)
-                    {
-                        newImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + $"\\Resources\\{configuration.listSites[i].iconPath}"));
-                    }
-                    else
-                    {
-                        newImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "\\Resources\\Help_64px.png"));
-                    }
-                    
-                    newImage.Name = $"Link{i}".ToString();
-                    newImage.Width = 58;
-                    newImage.Height = 58;
-                    newImage.Margin = new Thickness(4,0,4,0);
-                    newImage.Tag = i;
-                    newImage.HorizontalAlignment = HorizontalAlignment.Center;
-                    newImage.MouseUp += NewImage_MouseUp;
+                    Image newImage = MakeSiteIcon(i);
+                    newStackPanel.Children.Add(newImage);
+                    //gridImages.Children.Add(newImage);
+
+                    //Ellipse newEllipse = MakeSiteIconAcivity(i);
+                    //gridImages.Children.Add(newEllipse);
 
                     //add the icon to NewStackPanel
-                    newStackPanel.Children.Add(newImage);
+                    //newStackPanel.Children.Add(gridImages);
 
-                    Label newLabel = new Label();
-                    newLabel.VerticalAlignment = VerticalAlignment.Center;
-                    newLabel.FontSize = 20;
-                    newLabel.Content = configuration.listSites[i].site;
+                    //Ading a new stackpanel for the lables to sit correctly
+                    StackPanel stackLabels = new StackPanel();
+
+                    //add the label to stackLabels
+                    Label newLabel = MakeSiteLabelName(i);                                 
+                    stackLabels.Children.Add(newLabel);
+
+                    //add the label to stackLabels
+                    Label labelHost = MakeSiteLabelHost(i);
+                    stackLabels.Children.Add(labelHost);
 
                     //add label to the NewStackPanel
-                    newStackPanel.Children.Add(newLabel);
+                    newStackPanel.Children.Add(stackLabels);
 
                     //adds to the core menu
                     SiteIcons.Children.Insert(SiteIcons.Children.Count - 2, newStackPanel);
@@ -188,6 +116,93 @@ namespace MultiServiceBrowser
             catch
             {
 
+            }
+        }
+
+        private Image MakeSiteIcon(int i)
+        {
+            try
+            {
+                Image newImage = new Image();
+
+                if (configuration.listSites[i].iconPath == null ||
+                    configuration.listSites[i].iconPath == "")
+                {
+                    newImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "\\Resources\\Help_64px.png"));
+
+                }
+                else
+                {
+                    newImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + $"\\Resources\\{configuration.listSites[i].iconPath}"));
+                }
+
+                newImage.Name = $"Link{i}".ToString();
+                newImage.Width = 58;
+                newImage.Height = 58;
+                newImage.Margin = new Thickness(4, 0, 4, 0);
+                newImage.Tag = i;
+                newImage.HorizontalAlignment = HorizontalAlignment.Center;
+                newImage.MouseUp += NewImage_MouseUp;
+
+                return newImage;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private Ellipse MakeSiteIconAcivity(int i)
+        {
+            try
+            {
+                Ellipse newEllipse = new Ellipse();
+                SolidColorBrush brushRed = new SolidColorBrush();
+                brushRed.Color = Colors.Red;
+                newEllipse.Fill = brushRed;
+                newEllipse.Width = 10;
+                newEllipse.Height = 10;
+                newEllipse.Name = $"Link{1}Color".ToString();
+
+                return newEllipse;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private Label MakeSiteLabelName(int i)
+        {
+            try
+            {
+                Label newLabel = new Label();
+                newLabel.VerticalAlignment = VerticalAlignment.Center;
+                newLabel.FontSize = 18;
+                newLabel.Content = configuration.listSites[i].site;
+
+                return newLabel;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private Label MakeSiteLabelHost(int i)
+        {
+            try
+            {
+                Label labelHost = new Label();
+                labelHost.VerticalAlignment = VerticalAlignment.Center;
+                labelHost.FontSize = 10;
+                labelHost.Content = configuration.listSites[i].host;
+
+                return labelHost;
+            }
+            catch
+            {
+                return null;
             }
         }
 
@@ -265,16 +280,18 @@ namespace MultiServiceBrowser
             image.Source = b;
         }
 
-        private void MenuRootAdd_MouseUp(object sender, MouseButtonEventArgs e)
+        private async void MenuRootAdd_MouseUp(object sender, MouseButtonEventArgs e)
         {
             try
             {
-                uiNewSite _uiNewSite = new uiNewSite();
-                _uiNewSite.ShowDialog();
+                await Task.Delay(1);
+                //uiNewSite _uiNewSite = new uiNewSite();
+                //_uiNewSite.ShowDialog();
+                uiFrame.Content = new PageNewSite();
 
-                SiteIcons.Children.Clear();
+                //SiteIcons.Children.Clear();
                 //clear the sites and reparse the config
-                ReloadSites();
+                //ReloadSites();
 
             }
             catch
@@ -308,6 +325,9 @@ namespace MultiServiceBrowser
         private void MenuRootAbout_MouseUp(object sender, MouseButtonEventArgs e)
         {
             //about screen
+            //uiGrid.Children.Add()
+            uiFrame.Content = new PageAbout();
+
         }
 
         private void MenuRootAbout_Loaded(object sender, RoutedEventArgs e)
@@ -315,7 +335,7 @@ namespace MultiServiceBrowser
             // ... Create a new BitmapImage.
             BitmapImage b = new BitmapImage();
             b.BeginInit();
-            string t = Directory.GetCurrentDirectory() + "//Resources//info_64px.png";
+            string t = Directory.GetCurrentDirectory() + "//Resources//Info_64px.png";
             b.UriSource = new Uri(t);
             b.EndInit();
 
@@ -324,7 +344,6 @@ namespace MultiServiceBrowser
             // ... Assign Source.
             image.Source = b;
         }
-
 
     }
 }
